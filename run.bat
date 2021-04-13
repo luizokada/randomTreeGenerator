@@ -1,0 +1,1 @@
+python3 plot.py randomwalk < teste.txt
