@@ -130,8 +130,10 @@ def Diameter(g: Grafo) -> int:
     b = distanciaDeA.index(max(distanciaDeA))
     return distanciaDeA[b]
 
-#gera uma arvore aleatória com n vertices
-#retorna um grafo com n vertices
+# gera uma arvore aleatória com n vertices
+# retorna um grafo com n vertices
+
+
 def random_tree_radom_walk(n: int) -> Grafo:
     g = Grafo(n)
     visitado = [False]*n
@@ -145,8 +147,10 @@ def random_tree_radom_walk(n: int) -> Grafo:
         u = v
     return g
 
-#calcula a média(500 execuçôes) do diametro de uma arvore aleatorio co numero de vertices n
-#retorna a media
+# calcula a média(500 execuçôes) do diametro de uma arvore aleatorio co numero de vertices n
+# retorna a media
+
+
 def teste_random_tree(n: int) -> int:
     total = 0
     for _ in range(500):
@@ -187,18 +191,18 @@ assert Diameter(g) == 0
 assert BFS(g, 0, 1) == [0]
 
 media250 = teste_random_tree(250)
-print(media250)
+print("Diametro de uma arvore com 250 arestas: ", media250)
 media500 = teste_random_tree(500)
-print(media500)
+print("Diametro de uma arvore com 500 arestas: ", media500)
 media750 = teste_random_tree(750)
-print(media750)
+print("Diametro de uma arvore com 750 arestas: ", media750)
 media1000 = teste_random_tree(1000)
-print(media1000)
+print("Diametro de uma arvore com 1000 arestas: ", media1000)
 media1250 = teste_random_tree(1250)
-print(media1250)
+print("Diametro de uma arvore com 1250 arestas: ", media1250)
 media1500 = teste_random_tree(1500)
-print(media1500)
+print("Diametro de uma arvore com 1500 arestas: ", media1500)
 media1750 = teste_random_tree(1750)
-print(media1750)
+print("Diametro de uma arvore com 1750 arestas: ", media1750)
 media2000 = teste_random_tree(2000)
-print(media2000)
+print("Diametro de uma arvore com 2000 arestas: ", media2000)
