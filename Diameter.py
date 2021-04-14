@@ -151,15 +151,45 @@ def random_tree_radom_walk(n: int) -> Grafo:
 # retorna a media
 
 
-def teste_random_tree(n: int) -> int:
+def teste_random_tree():
     total = 0
-    for _ in range(500):
-        g = random_tree_radom_walk(n)
-        total += Diameter(g)
-    return total/500
+    parametroinit = 250
+    arvore = False
+    while parametroinit <= 2000:
+        total = 0
+        for _ in range(500):
+            arvore = False
+            g = random_tree_radom_walk(parametroinit)
+            arvore = isTree(g, parametroinit)
+            if arvore:
+                total += Diameter(g)
+        print(parametroinit, " ", total/500)
+        parametroinit = parametroinit + 250
 
 
-# testes grafo de tamanho 1,5 e 11
+def isTree(g: Grafo, n: int) -> bool:
+    arvore = False
+    visitado = [False]*n
+    vertice = g.getVertice(random.randint(0,n-1))
+    arvore = achaCiclos(g, visitado, vertice, -1)
+    for i in range(n):
+        if not visitado[i]:
+            return false
+    return not arvore
+
+
+def achaCiclos(g: Grafo, visitado: List[bool], vertice: Vertice, Pai:int):
+    visitado[vertice.num] = True
+    vPai = g.getVertice(vertice.num)
+    for vFilho in vPai.adj:
+        if not visitado[vFilho.num]:
+            if achaCiclos(g, visitado,vFilho,vertice.num):
+                return True
+        elif vFilho.num!=Pai: 
+            return True
+    return False
+
+ # testes grafo de tamanho 1,5 e 11
 g = Grafo(6)
 g.addAresta(0, 1)
 g.addAresta(0, 3)
@@ -190,19 +220,16 @@ g = Grafo(1)
 assert Diameter(g) == 0
 assert BFS(g, 0, 1) == [0]
 
-media250 = teste_random_tree(250)
-print("Diametro de uma arvore com 250 arestas: ", media250)
-media500 = teste_random_tree(500)
-print("Diametro de uma arvore com 500 arestas: ", media500)
-media750 = teste_random_tree(750)
-print("Diametro de uma arvore com 750 arestas: ", media750)
-media1000 = teste_random_tree(1000)
-print("Diametro de uma arvore com 1000 arestas: ", media1000)
-media1250 = teste_random_tree(1250)
-print("Diametro de uma arvore com 1250 arestas: ", media1250)
-media1500 = teste_random_tree(1500)
-print("Diametro de uma arvore com 1500 arestas: ", media1500)
-media1750 = teste_random_tree(1750)
-print("Diametro de uma arvore com 1750 arestas: ", media1750)
-media2000 = teste_random_tree(2000)
-print("Diametro de uma arvore com 2000 arestas: ", media2000)
+g = Grafo(3)
+g.addAresta(0, 1)
+g.addAresta(1, 2)
+g.addAresta(0, 2)
+assert isTree(g, 3) == False
+g = Grafo(3)
+g.addAresta(0, 1)
+g.addAresta(1, 2)
+assert isTree(g, 3) == True
+teste_random_tree()
+
+
+

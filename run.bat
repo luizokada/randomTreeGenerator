@@ -1,1 +1,1 @@
-python3 plot.py randomwalk < teste.txt
+python3 plot.py randomwalk < radomtreewalk.txt
