@@ -116,8 +116,6 @@ def BFS(g: Grafo, s: int, n: int) -> List[int]:
 
 # função que calcula o diametro de um arvores
 # Retorna o Diametro de uma arvore
-
-
 def Diameter(g: Grafo) -> int:
     # pega um vertice aleatório do grafo g
     numVertices = g.Numvertices()
@@ -132,8 +130,6 @@ def Diameter(g: Grafo) -> int:
 
 # gera uma arvore aleatória com n vertices
 # retorna um grafo com n vertices
-
-
 def random_tree_radom_walk(n: int) -> Grafo:
     g = Grafo(n)
     visitado = [False]*n
@@ -148,9 +144,7 @@ def random_tree_radom_walk(n: int) -> Grafo:
     return g
 
 # calcula a média(500 execuçôes) do diametro de uma arvore aleatorio co numero de vertices n
-# retorna a media
-
-
+# escre no display o numero de vertices do grado mais a media dos diametros
 def teste_random_tree():
     total = 0
     parametroinit = 250
@@ -166,18 +160,19 @@ def teste_random_tree():
         print(parametroinit, " ", total/500)
         parametroinit = parametroinit + 250
 
-
+#verifica se o grafo é uma arvore
 def isTree(g: Grafo, n: int) -> bool:
-    arvore = False
+    ciclo = False
     visitado = [False]*n
     vertice = g.getVertice(random.randint(0,n-1))
-    arvore = achaCiclos(g, visitado, vertice, -1)
+    ciclo = achaCiclos(g, visitado, vertice, -1)
+    #verifica se todos os vertices estão conectados a arvore
     for i in range(n):
         if not visitado[i]:
             return false
-    return not arvore
+    return not ciclo
 
-
+#verifica se um grafo nao orientado possui um ciclo
 def achaCiclos(g: Grafo, visitado: List[bool], vertice: Vertice, Pai:int):
     visitado[vertice.num] = True
     vPai = g.getVertice(vertice.num)
@@ -229,6 +224,7 @@ g = Grafo(3)
 g.addAresta(0, 1)
 g.addAresta(1, 2)
 assert isTree(g, 3) == True
+
 teste_random_tree()
 
 
