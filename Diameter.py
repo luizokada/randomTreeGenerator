@@ -1,5 +1,7 @@
 from typing import List
 import random
+import time
+import math
 
 
 class Vertice:
@@ -81,13 +83,20 @@ class queue:
 
     # verifica se a fila está vazia
     def isFilaVazia(self) -> bool:
-        return self.final == self.inicio
+        return self.final == self.inicio+1
 
     # imprime as caracteristicas de uma fila
     def Printarfila(self):
         print(self.queue)
         print(self.final)
         print(self.inicio)
+
+    def extractMin(self, chaves: List[int]) -> int:
+        u = chaves.index(min(chaves))
+        self.queue[self.queue.index(u)] = -1
+        self.final = self.final+1
+        chaves[u] = math.inf
+        return u
 
 
 # funçao BFS recebe como parametro um grafo g, o numero do vertice inicial s>=0 e o tamanho do grafo n>0
@@ -155,39 +164,173 @@ def teste_random_tree():
     total = 0
     parametroinit = 250
     arvore = False
+    tempoinicio = time.perf_counter()
     while parametroinit <= 2000:
         total = 0
+        media = 0
         for _ in range(500):
             arvore = False
             g = random_tree_radom_walk(parametroinit)
             arvore = isTree(g, parametroinit)
             if arvore:
+                media = media+1
                 total += Diameter(g)
-        print(parametroinit, " ", total/500)
+        print(parametroinit, " ", total/media)
         parametroinit = parametroinit + 250
+    tempofinal = time.perf_counter()
+    print(f"{tempofinal-tempoinicio: 0.4f}")
+
+
+def testeRandomTreeKruskal():
+    total = 0
+    parametroinit = 250
+    arvore = False
+    tempoinicio = time.perf_counter()
+    while parametroinit <= 2000:
+        total = 0
+        media = 0
+        for _ in range(500):
+            arvore = False
+            g = randomTreeKruskal(parametroinit)
+            arvore = isTree(g, parametroinit)
+            if arvore:
+                media = media+1
+                total += Diameter(g)
+        print(parametroinit, " ", total/media)
+        parametroinit = parametroinit + 250
+    tempofinal = time.perf_counter()
+    print(f"{tempofinal-tempoinicio: 0.4f}")
 
 
 def isTree(g: Grafo, n: int) -> bool:
     arvore = False
     visitado = [False]*n
-    vertice = g.getVertice(random.randint(0,n-1))
+    vertice = g.getVertice(random.randint(0, n-1))
     arvore = achaCiclos(g, visitado, vertice, -1)
     for i in range(n):
         if not visitado[i]:
-            return false
+            return False
     return not arvore
 
 
-def achaCiclos(g: Grafo, visitado: List[bool], vertice: Vertice, Pai:int):
+def achaCiclos(g: Grafo, visitado: List[bool], vertice: Vertice, Pai: int):
     visitado[vertice.num] = True
     vPai = g.getVertice(vertice.num)
     for vFilho in vPai.adj:
         if not visitado[vFilho.num]:
-            if achaCiclos(g, visitado,vFilho,vertice.num):
+            if achaCiclos(g, visitado, vFilho, vertice.num):
                 return True
-        elif vFilho.num!=Pai: 
+        elif vFilho.num != Pai:
             return True
     return False
+
+
+def geraGrafoCompleto(n: int) -> Grafo:
+    g = Grafo(n)
+    for i in range(n):
+        for j in range(i+1, n):
+            g.addAresta(i, j)
+    return g
+
+# def extraiMin(q: queue, Arestas: List[List[float]]) -> int:
+
+
+def addPesoAresta(g: Grafo) -> List[List[float]]:
+    n = g.Numvertices()
+    a = [[math.inf for col in range(n)] for row in range(n)]
+    for i in range(n):
+        for j in range(i+1, n):
+            peso = 0
+            while(peso == 0):
+                peso = random.random()
+            a[i][j] = peso
+            a[j][i] = peso
+    return a
+
+
+def randomTreeKruskal(n: int) -> Grafo:
+    g = geraGrafoCompleto(n)
+    arestas = addPesoAresta(g)
+    arvore = MSTKruskal(g, arestas)
+    return arvore
+
+
+def MSTPrim(g: Grafo, Arestas: List[List[float]], vertice: int) -> Grafo:
+    arvore = Grafo(g.Numvertices())
+    Chaves = [math.inf]*g.Numvertices()
+    Pai = [-1]*g.Numvertices()
+    q = queue(g.Numvertices())
+    Chaves[vertice] = 0
+    for i in range(g.Numvertices()):
+        q.enfileira(i)
+    while not q.isFilaVazia():
+        q.Printarfila()
+        u = q.extractMin(Chaves)
+        if Pai[u] != -1:
+            arvore.addAresta(Pai[u], u)
+        u = g.getVertice(u)
+        for vFilho in u.adj:
+            if vFilho.num in q.queue and Arestas[u.num][vFilho.num] < Chaves[vFilho.num]:
+                Pai[vFilho.num] = u.num
+                Chaves[vFilho.num] = Arestas[u.num][vFilho.num]
+    return arvore
+
+
+def randomTreePrim(n: int) -> Grafo:
+    g = geraGrafoCompleto(n)
+    arestas = addPesoAresta(g)
+    vertice = random.randint(0, g.Numvertices()-1)
+    arvore = MSTPrim(g, arestas, vertice)
+    return arvore
+
+
+def MSTKruskal(g: Grafo, Arestas: List[List[float]]) -> Grafo:
+    A = Grafo(g.Numvertices())
+    Pai = [0]*g.Numvertices()
+    Rank = [0]*g.Numvertices()
+    for i in range(g.Numvertices()):
+        MakeSet(Rank, Pai, i)
+    PesoOrdenado = []
+    for i in range(g.Numvertices()):
+        for j in range(i+1, g.Numvertices()):
+            PesoOrdenado.append(({"v1": i, "v2": j}, Arestas[i][j]))
+    PesoOrdenado.sort(key=selecionaCrtierioParaOrdenar)
+    for i in range(g.numAresta):
+        u = PesoOrdenado[i][0]["v1"]
+        v = PesoOrdenado[i][0]["v2"]
+        if FindSet(Pai, u) != FindSet(Pai, v):
+            A.addAresta(u, v)
+            Union(u, v, Rank, Pai)
+    return A
+
+
+def selecionaCrtierioParaOrdenar(el) -> int:
+    return el[1]
+
+
+def MakeSet(rank: List[int], Pai: List[int], vertice: int):
+    Pai[vertice] = vertice
+    rank = 0
+
+
+def FindSet(Pai: List[int], vertice: int) -> int:
+    if(Pai[vertice] != vertice):
+        Pai[vertice] = FindSet(Pai, Pai[vertice])
+    return Pai[vertice]
+
+
+def Link(u: int, v: int, rank: List[int], Pai: List[int]):
+    if(rank[u] > rank[v]):
+        Pai[v] = u
+    else:
+        Pai[u] = v
+        if rank[u] == rank[v]:
+            rank[v] = +1
+
+
+def Union(u: int, v: int, rank: List[int], Pai: List[int]):
+    Link(FindSet(Pai, u), FindSet(Pai, v), rank, Pai)
+
 
  # testes grafo de tamanho 1,5 e 11
 g = Grafo(6)
@@ -229,7 +372,12 @@ g = Grafo(3)
 g.addAresta(0, 1)
 g.addAresta(1, 2)
 assert isTree(g, 3) == True
-teste_random_tree()
-
-
-
+# teste_random_tree()
+g = Grafo(5)
+# a = addPesoAresta(g)
+g = randomTreeKruskal(4)
+assert isTree(g, g.Numvertices()) == True
+# testeRandomTreeKruskal()
+g = randomTreePrim(250)
+d = isTree(g, 250)
+print(d)
