@@ -144,7 +144,7 @@ def random_tree_radom_walk(n: int) -> Grafo:
     return g
 
 # calcula a média(500 execuçôes) do diametro de uma arvore aleatorio co numero de vertices n
-# escre no display o numero de vertices do grado mais a media dos diametros
+# escreve no display o numero de vertices do grafo e a media dos diametros
 def teste_random_tree():
     total = 0
     parametroinit = 250
@@ -224,6 +224,9 @@ g = Grafo(3)
 g.addAresta(0, 1)
 g.addAresta(1, 2)
 assert isTree(g, 3) == True
+
+g = Grafo(1)
+assert isTree(g, 1) == True
 
 teste_random_tree()
 
