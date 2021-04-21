@@ -125,8 +125,6 @@ def BFS(g: Grafo, s: int, n: int) -> List[int]:
 
 # função que calcula o diametro de um arvores
 # Retorna o Diametro de uma arvore
-
-
 def Diameter(g: Grafo) -> int:
     # pega um vertice aleatório do grafo g
     numVertices = g.Numvertices()
@@ -141,8 +139,6 @@ def Diameter(g: Grafo) -> int:
 
 # gera uma arvore aleatória com n vertices
 # retorna um grafo com n vertices
-
-
 def random_tree_radom_walk(n: int) -> Grafo:
     g = Grafo(n)
     visitado = [False]*n
@@ -157,9 +153,7 @@ def random_tree_radom_walk(n: int) -> Grafo:
     return g
 
 # calcula a média(500 execuçôes) do diametro de uma arvore aleatorio co numero de vertices n
-# retorna a media
-
-
+# escre no display o numero de vertices do grado mais a media dos diametros
 def teste_random_tree():
     total = 0
     parametroinit = 250
@@ -201,10 +195,11 @@ def testeRandomTreeKruskal():
     tempofinal = time.perf_counter()
     print(f"{tempofinal-tempoinicio: 0.4f}")
 
-
+#verifica se o grafo é uma arvore
 def isTree(g: Grafo, n: int) -> bool:
-    arvore = False
+    ciclo = False
     visitado = [False]*n
+<<<<<<< HEAD
     vertice = g.getVertice(random.randint(0, n-1))
     arvore = achaCiclos(g, visitado, vertice, -1)
     for i in range(n):
@@ -214,6 +209,18 @@ def isTree(g: Grafo, n: int) -> bool:
 
 
 def achaCiclos(g: Grafo, visitado: List[bool], vertice: Vertice, Pai: int):
+=======
+    vertice = g.getVertice(random.randint(0,n-1))
+    ciclo = achaCiclos(g, visitado, vertice, -1)
+    #verifica se todos os vertices estão conectados a arvore
+    for i in range(n):
+        if not visitado[i]:
+            return false
+    return not ciclo
+
+#verifica se um grafo nao orientado possui um ciclo
+def achaCiclos(g: Grafo, visitado: List[bool], vertice: Vertice, Pai:int):
+>>>>>>> f3bc6295aac81c0be299c95936eb73dfa96e1e6e
     visitado[vertice.num] = True
     vPai = g.getVertice(vertice.num)
     for vFilho in vPai.adj:
@@ -372,6 +379,7 @@ g = Grafo(3)
 g.addAresta(0, 1)
 g.addAresta(1, 2)
 assert isTree(g, 3) == True
+<<<<<<< HEAD
 # teste_random_tree()
 g = Grafo(5)
 # a = addPesoAresta(g)
@@ -381,3 +389,10 @@ assert isTree(g, g.Numvertices()) == True
 g = randomTreePrim(250)
 d = isTree(g, 250)
 print(d)
+=======
+
+teste_random_tree()
+
+
+
+>>>>>>> f3bc6295aac81c0be299c95936eb73dfa96e1e6e
