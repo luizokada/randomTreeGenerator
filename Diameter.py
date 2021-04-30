@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 import random
 import time
 import math
@@ -173,21 +173,27 @@ def teste_random_tree():
     total = 0
     parametroinit = 250
     arvore = False
-    tempoinicio = time.perf_counter()
+    tempoinicioexecucao = time.time()
     while parametroinit <= 2000:
         total = 0
         media = 0
+        tempomedio = 0
         for _ in range(500):
             arvore = False
+            tempoinit = time.time()
             g = random_tree_radom_walk(parametroinit)
             arvore = isTree(g, parametroinit)
+            tempofim = time.time()
+            tempomedio = tempomedio+(tempofim-tempoinit)
             if arvore:
                 media = media+1
                 total += Diameter(g)
-        print(parametroinit, " ", total/media)
+            else:
+                return "ERRO"
+        print(parametroinit, " ", total/media, " ", tempomedio/media)
         parametroinit = parametroinit + 250
-    tempofinal = time.perf_counter()
-    print(f"{tempofinal-tempoinicio:0.4f}")
+    tempofinalexecucao = time.time()
+    print(tempofinalexecucao-tempoinicioexecucao)
 
 # calcula a média(500 execuçôes) do diametro de uma arvore aleatoria gerado com o randomtreeKruskal
 # escreve no display o numero de vertices do grado mais a media dos diametros
@@ -198,21 +204,27 @@ def testeRandomTreeKruskal():
     total = 0
     parametroinit = 250
     arvore = False
-    tempoinicio = time.perf_counter()
+    tempoinicioexecucao = time.time()
     while parametroinit <= 2000:
         total = 0
         media = 0
+        tempomedio = 0
         for _ in range(500):
             arvore = False
+            tempoinit = time.time()
             g = randomTreeKruskal(parametroinit)
             arvore = isTree(g, parametroinit)
+            tempofim = time.time()
+            tempomedio = tempomedio+(tempofim-tempoinit)
             if arvore:
                 media = media+1
                 total += Diameter(g)
-        print(parametroinit, " ", total/media)
+            else:
+                return "ERRO"
+        print(parametroinit, " ", total/media, " ", tempomedio/media)
         parametroinit = parametroinit + 250
-    tempofinal = time.perf_counter()
-    print(f"{tempofinal-tempoinicio:0.4f}")
+    tempofinalexecucao = time.time()
+    print(tempofinalexecucao-tempoinicioexecucao)
 
 # calcula a média(500 execuçôes) do diametro de uma arvore aleatoria gerado com o randomtreePrim
 # escreve no display o numero de vertices do grado mais a media dos diametros
@@ -223,21 +235,27 @@ def testeRandomTreePrim():
     total = 0
     parametroinit = 250
     arvore = False
-    tempoinicio = time.perf_counter()
+    tempoinicioexecucao = time.time()
     while parametroinit <= 2000:
         total = 0
         media = 0
+        tempomedio = 0
         for _ in range(500):
             arvore = False
+            tempoinit = time.time()
             g = randomTreePrim(parametroinit)
             arvore = isTree(g, parametroinit)
+            tempofim = time.time()
+            tempomedio = tempomedio+(tempofim-tempoinit)
             if arvore:
                 media = media+1
                 total += Diameter(g)
-        print(parametroinit, " ", total/media)
+            else:
+                return "ERRO"
+        print(parametroinit, " ", total/media, " ", tempomedio/media)
         parametroinit = parametroinit + 250
-    tempofinal = time.perf_counter()
-    print(f"{tempofinal-tempoinicio:0.4f}")
+    tempofinalexecucao = time.time()
+    print(tempofinalexecucao-tempoinicioexecucao)
 
 
 # verifica se o grafo é uma arvore
@@ -245,11 +263,11 @@ def isTree(g: Grafo, n: int) -> bool:
     ciclo = False
     visitado = [False]*n
     vertice = g.getVertice(random.randint(0, n-1))
-    arvore = achaCiclos(g, visitado, vertice, -1)
+    ciclo = achaCiclos(g, visitado, vertice, -1)
     for i in range(n):
         if not visitado[i]:
             return False
-    return not arvore
+    return not ciclo
 
 # verifica se em um grafo existe um ciclo
 
@@ -281,7 +299,7 @@ def geraGrafoCompleto(n: int) -> Grafo:
 
 def addPesoAresta(g: Grafo) -> List[List[float]]:
     n = g.Numvertices()
-    # cria a matriz uqe tera os pesos
+    # cria a matriz que terá os pesos das arestas
     a = [[math.inf for col in range(n)] for row in range(n)]
     for i in range(n):
         for j in range(i+1, n):
@@ -314,22 +332,22 @@ def MSTKruskal(g: Grafo, Arestas: List[List[float]]) -> Grafo:
     # coloca os pesos das arestas em um dicionário
     for i in range(g.Numvertices()):
         for j in range(i+1, g.Numvertices()):
-            PesoOrdenado.append(({"v1": i, "v2": j}, Arestas[i][j]))
+            PesoOrdenado.append((i, j, Arestas[i][j]))
     # ordena os presos dentro do dicionário
     PesoOrdenado.sort(key=selecionaCrtierioParaOrdenar)
-    for i in range(g.numAresta):
-        u = PesoOrdenado[i][0]["v1"]
-        v = PesoOrdenado[i][0]["v2"]
+    for (u, v, _) in PesoOrdenado:
         if FindSet(Pai, u) != FindSet(Pai, v):
             A.addAresta(u, v)
+            if A.numAresta == A.Numvertices()-1:
+                break
             Union(u, v, Rank, Pai)
     return A
 
 # seleciona um campo do dicionário que serivirá como critério de ordenação
 
 
-def selecionaCrtierioParaOrdenar(el) -> int:
-    return el[1]
+def selecionaCrtierioParaOrdenar(el: Tuple[int, int, float]) -> int:
+    return el[2]
 
 # define o pai de um vertice e o rank dele
 # por padrao o vertice é pai dele mesmo e possui rank zero no inicio
@@ -347,7 +365,7 @@ def FindSet(Pai: List[int], vertice: int) -> int:
         Pai[vertice] = FindSet(Pai, Pai[vertice])
     return Pai[vertice]
 
-# linka dois vertices diferentes
+# linka dois vertices diferentes a partir do seu rank
 
 
 def Link(u: int, v: int, rank: List[int], Pai: List[int]):
@@ -358,7 +376,7 @@ def Link(u: int, v: int, rank: List[int], Pai: List[int]):
         if rank[u] == rank[v]:
             rank[v] = +1
 
-# uni dois vertices tornando um pai do outro
+# faz o link entre dois vertices denpendendo do seu rank
 
 
 def Union(u: int, v: int, rank: List[int], Pai: List[int]):
@@ -393,7 +411,7 @@ def MSTPrim(g: Grafo, Arestas: List[List[float]], vertice: int) -> Grafo:
             arvore.addAresta(Pai[u], u)
         u = g.getVertice(u)
         for vFilho in u.adj:
-            if vFilho.num in q.queue and Arestas[u.num][vFilho.num] < Chaves[vFilho.num]:
+            if q.queue[vFilho.num] != -1 and Arestas[u.num][vFilho.num] < Chaves[vFilho.num]:
                 Pai[vFilho.num] = u.num
                 Chaves[vFilho.num] = Arestas[u.num][vFilho.num]
     return arvore
@@ -440,6 +458,11 @@ g.addAresta(0, 1)
 g.addAresta(1, 2)
 assert isTree(g, 3) == True
 g = Grafo(5)
+
+# teste se randomtreekruskal está gerando uma arvore
+g = random_tree_radom_walk(250)
+assert isTree(g, 250) == True
+
 # teste das funcoes auxiliares do kruskal
 pai = [-1]*4
 rank = [0]*4
@@ -464,11 +487,30 @@ assert rank[d] == 1
 assert FindSet(pai, a) == FindSet(pai, b)
 assert FindSet(pai, b) == FindSet(pai, a)
 assert FindSet(pai, c) != FindSet(pai, a)
+
+# teste se randomtreekruskal está gerando uma arvore
 g = randomTreeKruskal(250)
 assert isTree(g, g.Numvertices()) == True
 
+# teste extract min
+q = queue(5)
+chaves = [2, 3, 6, 8, 0]
+q.enfileira(0)
+q.enfileira(1)
+q.enfileira(2)
+q.enfileira(3)
+q.enfileira(4)
+assert q.extractMin(chaves) == 4
+assert q.extractMin(chaves) == 0
+assert q.extractMin(chaves) == 1
+assert q.extractMin(chaves) == 2
+assert q.extractMin(chaves) == 3
+assert q.isFilaVazia() == True
+
+# teste se randomtreeprim está gerando uma arvore
 g = randomTreePrim(250)
 assert isTree(g, 250) == True
+
 # exemplo krukal e prim usando o grafo apresntado em sala da sala
 g = Grafo(9)
 g.addAresta(0, 1)
@@ -485,6 +527,7 @@ g.addAresta(5, 6)
 g.addAresta(6, 7)
 g.addAresta(6, 8)
 g.addAresta(7, 8)
+
 # matriz dos pesos
 peso = [[math.inf, 4, math.inf, math.inf, math.inf, math.inf, math.inf, 8, math.inf],
         [4, math.inf, 8, math.inf, math.inf, math.inf, math.inf, 11, math.inf],
