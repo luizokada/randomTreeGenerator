@@ -107,8 +107,12 @@ class queue:
         return u
 
 
-# funçao BFS recebe como parametro um grafo g, o numero do vertice inicial s>=0 e o tamanho do grafo n>0
-# retorna um arrray que indica a distancias dos vertices em relação a s
+"""
+funçao BFS recebe como parametro um grafo g, o numero do vertice inicial s>=0 e o tamanho do grafo n>0
+retorna um arrray que indica a distancias dos vertices em relação a s
+"""
+
+
 def BFS(g: Grafo, s: int, n: int) -> List[int]:
     # O array visistados marca True para os vertices visistados
     visitado = [False]*n
@@ -131,8 +135,11 @@ def BFS(g: Grafo, s: int, n: int) -> List[int]:
     # retorna o vetor d que é o vetor das distancias dos vertices em relação a s
     return distancia
 
-# função que calcula o diametro de uma arvore
-# Retorna o Diametro de uma arvore
+
+"""
+ função que calcula o diametro de uma arvore
+ Retorna o Diametro de uma arvore
+"""
 
 
 def Diameter(g: Grafo) -> int:
@@ -147,8 +154,11 @@ def Diameter(g: Grafo) -> int:
     b = distanciaDeA.index(max(distanciaDeA))
     return distanciaDeA[b]
 
-# gera uma arvore aleatória com n vertices
-# retorna um grafo com n vertices
+
+"""
+ gera uma arvore aleatória com n vertices
+ retorna um grafo com n vertices
+"""
 
 
 def random_tree_radom_walk(n: int) -> Grafo:
@@ -164,12 +174,17 @@ def random_tree_radom_walk(n: int) -> Grafo:
         u = v
     return g
 
-# calcula a média(500 execuçôes) do diametro de uma arvore aleatoria gerada pelo randomtreewalk
-# escreve no display o numero de vertices do grafo e a media dos diametros
-# após isso escre o tempo de execução em segundos
+
+"""
+calcula a média(500 execuçôes) do diametro de uma arvore aleatoria gerada pelo randomtreewalk
+escreve no display o numero de vertices do grafo e a media dos diametros
+após isso escre o tempo de execução em segundos
+"""
 
 
-def teste_random_tree():
+def diameterrandomTree():
+    diameters = open("randomTree.txt", "w")
+    timearq = open("randomTreeTime.txt", "w")
     total = 0
     parametroinit = 250
     arvore = False
@@ -190,17 +205,21 @@ def teste_random_tree():
                 total += Diameter(g)
             else:
                 return "ERRO"
-        print(parametroinit, " ", total/media, " ", tempomedio/media)
+        diameters.write(str(parametroinit) + " "+str(total/media)+"\n")
+        timearq.write(str(parametroinit) + " "+str(tempomedio/media)+"\n")
         parametroinit = parametroinit + 250
     tempofinalexecucao = time.time()
-    print(tempofinalexecucao-tempoinicioexecucao)
-
+    timearq.write("Total: "+str(tempofinalexecucao-tempoinicioexecucao))
+    timearq.close()
+    diameters.close()
 # calcula a média(500 execuçôes) do diametro de uma arvore aleatoria gerado com o randomtreeKruskal
 # escreve no display o numero de vertices do grado mais a media dos diametros
 # após isso escreve o tempo de execução em segundos
 
 
-def testeRandomTreeKruskal():
+def diameterRandomTreeKruskal():
+    diameters = open("randomTreeKruskal.txt", "w")
+    timearq = open("randomTreeKruskalTime.txt", "w")
     total = 0
     parametroinit = 250
     arvore = False
@@ -221,17 +240,21 @@ def testeRandomTreeKruskal():
                 total += Diameter(g)
             else:
                 return "ERRO"
-        print(parametroinit, " ", total/media, " ", tempomedio/media)
+        diameters.write(str(parametroinit) + " "+str(total/media)+"\n")
+        timearq.write(str(parametroinit) + " "+str(tempomedio/media)+"\n")
         parametroinit = parametroinit + 250
     tempofinalexecucao = time.time()
-    print(tempofinalexecucao-tempoinicioexecucao)
-
+    timearq.write("Total: "+str(tempofinalexecucao-tempoinicioexecucao))
+    timearq.close()
+    diameters.close()
 # calcula a média(500 execuçôes) do diametro de uma arvore aleatoria gerado com o randomtreePrim
 # escreve no display o numero de vertices do grado mais a media dos diametros
 # após isso escreve o tempo de execução em segundos
 
 
-def testeRandomTreePrim():
+def diameterRandomTreePrim():
+    diameters = open("randomTreePrim.txt", "w")
+    timearq = open("randomTreePrimTime.txt", "w")
     total = 0
     parametroinit = 250
     arvore = False
@@ -252,13 +275,16 @@ def testeRandomTreePrim():
                 total += Diameter(g)
             else:
                 return "ERRO"
-        print(parametroinit, " ", total/media, " ", tempomedio/media)
+        diameters.write(str(parametroinit) + " "+str(total/media)+"\n")
+        timearq.write(str(parametroinit) + " "+str(tempomedio/media)+"\n")
         parametroinit = parametroinit + 250
     tempofinalexecucao = time.time()
-    print(tempofinalexecucao-tempoinicioexecucao)
-
-
+    timearq.write("Total: "+str(tempofinalexecucao-tempoinicioexecucao))
+    timearq.close()
+    diameters.close()
 # verifica se o grafo é uma arvore
+
+
 def isTree(g: Grafo, n: int) -> bool:
     ciclo = False
     visitado = [False]*n
@@ -293,8 +319,11 @@ def geraGrafoCompleto(n: int) -> Grafo:
             g.addAresta(i, j)
     return g
 
-# adiciona pesoas aleatorios a todas arestas de um grafo completo
-# os valores do peso está entre 0 e 1
+
+"""
+adiciona pesoas aleatorios a todas arestas de um grafo completo
+os valores do peso está entre 0 e 1
+"""
 
 
 def addPesoAresta(g: Grafo) -> List[List[float]]:
@@ -349,8 +378,11 @@ def MSTKruskal(g: Grafo, Arestas: List[List[float]]) -> Grafo:
 def selecionaCrtierioParaOrdenar(el: Tuple[int, int, float]) -> int:
     return el[2]
 
-# define o pai de um vertice e o rank dele
-# por padrao o vertice é pai dele mesmo e possui rank zero no inicio
+
+"""
+define o pai de um vertice e o rank dele
+por padrao o vertice é pai dele mesmo e possui rank zero no inicio
+"""
 
 
 def MakeSet(rank: List[int], Pai: List[int], vertice: int):
@@ -418,154 +450,181 @@ def MSTPrim(g: Grafo, Arestas: List[List[float]], vertice: int) -> Grafo:
 
 
 # testes grafo de tamanho 1,5 e 11
-g = Grafo(6)
-g.addAresta(0, 1)
-g.addAresta(0, 3)
-g.addAresta(1, 4)
-g.addAresta(2, 4)
-g.addAresta(2, 5)
-g.addAresta(3, 1)
-g.addAresta(4, 3)
-assert BFS(g, 0, 6) == [0, 1, 3, 1, 2, 4]
-assert Diameter(g) == 4
+def DiameterTest():
+    g = Grafo(6)
+    g.addAresta(0, 1)
+    g.addAresta(0, 3)
+    g.addAresta(1, 4)
+    g.addAresta(2, 4)
+    g.addAresta(2, 5)
+    g.addAresta(3, 1)
+    g.addAresta(4, 3)
+    assert BFS(g, 0, 6) == [0, 1, 3, 1, 2, 4]
+    assert Diameter(g) == 4
+    g = Grafo(11)
+    g.addAresta(0, 1)
+    g.addAresta(0, 3)
+    g.addAresta(0, 2)
+    g.addAresta(2, 4)
+    g.addAresta(2, 5)
+    g.addAresta(3, 6)
+    g.addAresta(4, 8)
+    g.addAresta(4, 7)
+    g.addAresta(5, 9)
+    g.addAresta(9, 10)
+    assert Diameter(g) == 6
+    assert BFS(g, 0, 11) == [0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4]
+    g = Grafo(1)
+    assert Diameter(g) == 0
+    assert BFS(g, 0, 1) == [0]
 
-g = Grafo(11)
-g.addAresta(0, 1)
-g.addAresta(0, 3)
-g.addAresta(0, 2)
-g.addAresta(2, 4)
-g.addAresta(2, 5)
-g.addAresta(3, 6)
-g.addAresta(4, 8)
-g.addAresta(4, 7)
-g.addAresta(5, 9)
-g.addAresta(9, 10)
-assert Diameter(g) == 6
-assert BFS(g, 0, 11) == [0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4]
+# testes da funcao isTree
 
 
-g = Grafo(1)
-assert Diameter(g) == 0
-assert BFS(g, 0, 1) == [0]
+def IsTreeTest():
+    g = Grafo(3)
+    g.addAresta(0, 1)
+    g.addAresta(1, 2)
+    g.addAresta(0, 2)
+    assert isTree(g, 3) == False
+    g = Grafo(3)
+    g.addAresta(0, 1)
+    g.addAresta(1, 2)
+    assert isTree(g, 3) == True
+    g = Grafo(5)
 
-g = Grafo(3)
-g.addAresta(0, 1)
-g.addAresta(1, 2)
-g.addAresta(0, 2)
-assert isTree(g, 3) == False
-g = Grafo(3)
-g.addAresta(0, 1)
-g.addAresta(1, 2)
-assert isTree(g, 3) == True
-g = Grafo(5)
 
 # teste se randomtreekruskal está gerando uma arvore
-g = random_tree_radom_walk(250)
-assert isTree(g, 250) == True
+def simpleTestRandomTreeTadomWalk():
+    g = random_tree_radom_walk(250)
+    assert isTree(g, 250) == True
 
 # teste das funcoes auxiliares do kruskal
-pai = [-1]*4
-rank = [0]*4
-a = 0
-b = 1
-c = 2
-d = 3
-MakeSet(rank, pai, a)
-MakeSet(rank, pai, b)
-MakeSet(rank, pai, c)
-MakeSet(rank, pai, d)
-assert FindSet(pai, a) == a
-assert FindSet(pai, b) == b
-assert FindSet(pai, c) == c
-assert FindSet(pai, d) == d
-Union(b, d, rank, pai)
-Union(d, a, rank, pai)
-assert rank[a] == 0
-assert rank[b] == 0
-assert rank[c] == 0
-assert rank[d] == 1
-assert FindSet(pai, a) == FindSet(pai, b)
-assert FindSet(pai, b) == FindSet(pai, a)
-assert FindSet(pai, c) != FindSet(pai, a)
+
+
+def auxiliarFuncionKruskalTest():
+    pai = [-1]*4
+    rank = [0]*4
+    a = 0
+    b = 1
+    c = 2
+    d = 3
+    MakeSet(rank, pai, a)
+    MakeSet(rank, pai, b)
+    MakeSet(rank, pai, c)
+    MakeSet(rank, pai, d)
+    assert FindSet(pai, a) == a
+    assert FindSet(pai, b) == b
+    assert FindSet(pai, c) == c
+    assert FindSet(pai, d) == d
+    Union(b, d, rank, pai)
+    Union(d, a, rank, pai)
+    assert rank[a] == 0
+    assert rank[b] == 0
+    assert rank[c] == 0
+    assert rank[d] == 1
+    assert FindSet(pai, a) == FindSet(pai, b)
+    assert FindSet(pai, b) == FindSet(pai, a)
+    assert FindSet(pai, c) != FindSet(pai, a)
 
 # teste se randomtreekruskal está gerando uma arvore
-g = randomTreeKruskal(250)
-assert isTree(g, g.Numvertices()) == True
 
-# teste extract min
-q = queue(5)
-chaves = [2, 3, 6, 8, 0]
-q.enfileira(0)
-q.enfileira(1)
-q.enfileira(2)
-q.enfileira(3)
-q.enfileira(4)
-assert q.extractMin(chaves) == 4
-assert q.extractMin(chaves) == 0
-assert q.extractMin(chaves) == 1
-assert q.extractMin(chaves) == 2
-assert q.extractMin(chaves) == 3
-assert q.isFilaVazia() == True
 
-# teste se randomtreeprim está gerando uma arvore
-g = randomTreePrim(250)
-assert isTree(g, 250) == True
+def simpleTestKruskalandPrim():
+    # randomtreeKruskal test
+    g = randomTreeKruskal(250)
+    assert isTree(g, g.Numvertices()) == True
 
-# exemplo krukal e prim usando o grafo apresntado em sala da sala
-g = Grafo(9)
-g.addAresta(0, 1)
-g.addAresta(0, 7)
-g.addAresta(1, 2)
-g.addAresta(1, 7)
-g.addAresta(2, 3)
-g.addAresta(2, 8)
-g.addAresta(2, 5)
-g.addAresta(3, 4)
-g.addAresta(3, 5)
-g.addAresta(4, 5)
-g.addAresta(5, 6)
-g.addAresta(6, 7)
-g.addAresta(6, 8)
-g.addAresta(7, 8)
+    # randomtreeprim test
+    g = randomTreePrim(250)
+    assert isTree(g, 250) == True
 
-# matriz dos pesos
-peso = [[math.inf, 4, math.inf, math.inf, math.inf, math.inf, math.inf, 8, math.inf],
-        [4, math.inf, 8, math.inf, math.inf, math.inf, math.inf, 11, math.inf],
-        [math.inf, 8, math.inf, 7, math.inf, 4, math.inf, math.inf, 2],
-        [math.inf, math.inf, 7, math.inf, 9, 14, math.inf, math.inf, math.inf],
-        [math.inf, math.inf, math.inf, 9, math.inf,
-            10, math.inf, math.inf, math.inf],
-        [math.inf, math.inf, 4, 14, 10, math.inf, 2, math.inf, math.inf],
-        [math.inf, math.inf, math.inf, math.inf, math.inf, 2, math.inf, 1, 6],
-        [math.inf, 11, math.inf, math.inf, math.inf, math.inf, 1, math.inf, 7],
-        [math.inf, math.inf, 2, math.inf, math.inf, math.inf, 6, 7, math.inf]
-        ]
+    # krukal and prim example
+    g = Grafo(9)
+    g.addAresta(0, 1)
+    g.addAresta(0, 7)
+    g.addAresta(1, 2)
+    g.addAresta(1, 7)
+    g.addAresta(2, 3)
+    g.addAresta(2, 8)
+    g.addAresta(2, 5)
+    g.addAresta(3, 4)
+    g.addAresta(3, 5)
+    g.addAresta(4, 5)
+    g.addAresta(5, 6)
+    g.addAresta(6, 7)
+    g.addAresta(6, 8)
+    g.addAresta(7, 8)
 
-# usando o mst kruskal
-gr = MSTKruskal(g, peso)
+    # matriz dos pesos
+    peso = [[math.inf, 4, math.inf, math.inf, math.inf, math.inf, math.inf, 8, math.inf],
+            [4, math.inf, 8, math.inf, math.inf, math.inf, math.inf, 11, math.inf],
+            [math.inf, 8, math.inf, 7, math.inf, 4, math.inf, math.inf, 2],
+            [math.inf, math.inf, 7, math.inf, 9, 14, math.inf, math.inf, math.inf],
+            [math.inf, math.inf, math.inf, 9, math.inf,
+                10, math.inf, math.inf, math.inf],
+            [math.inf, math.inf, 4, 14, 10, math.inf, 2, math.inf, math.inf],
+            [math.inf, math.inf, math.inf, math.inf, math.inf, 2, math.inf, 1, 6],
+            [math.inf, 11, math.inf, math.inf, math.inf, math.inf, 1, math.inf, 7],
+            [math.inf, math.inf, 2, math.inf, math.inf, math.inf, 6, 7, math.inf]
+            ]
+    gr = MSTKruskal(g, peso)
+    assert gr.getAdjacentes(0) == [1, 7]
+    assert gr.getAdjacentes(1) == [0]
+    assert gr.getAdjacentes(2) == [8, 5, 3]
+    assert gr.getAdjacentes(3) == [2, 4]
+    assert gr.getAdjacentes(4) == [3]
+    assert gr.getAdjacentes(5) == [6, 2]
+    assert gr.getAdjacentes(6) == [7, 5]
+    assert gr.getAdjacentes(7) == [6, 0]
+    assert gr.getAdjacentes(8) == [2]
+    gr = MSTPrim(g, peso, 0)
+    assert gr.getAdjacentes(0) == [1]
+    assert gr.getAdjacentes(1) == [0, 2]
+    assert gr.getAdjacentes(2) == [1, 8, 5, 3]
+    assert gr.getAdjacentes(3) == [2, 4]
+    assert gr.getAdjacentes(4) == [3]
+    assert gr.getAdjacentes(5) == [2, 6]
+    assert gr.getAdjacentes(6) == [5, 7]
+    assert gr.getAdjacentes(7) == [6]
+    assert gr.getAdjacentes(8) == [2]
 
-assert gr.getAdjacentes(0) == [1, 7]
-assert gr.getAdjacentes(1) == [0]
-assert gr.getAdjacentes(2) == [8, 5, 3]
-assert gr.getAdjacentes(3) == [2, 4]
-assert gr.getAdjacentes(4) == [3]
-assert gr.getAdjacentes(5) == [6, 2]
-assert gr.getAdjacentes(6) == [7, 5]
-assert gr.getAdjacentes(7) == [6, 0]
-assert gr.getAdjacentes(8) == [2]
-# mst prim
-gr = MSTPrim(g, peso, 0)
-assert gr.getAdjacentes(0) == [1]
-assert gr.getAdjacentes(1) == [0, 2]
-assert gr.getAdjacentes(2) == [1, 8, 5, 3]
-assert gr.getAdjacentes(3) == [2, 4]
-assert gr.getAdjacentes(4) == [3]
-assert gr.getAdjacentes(5) == [2, 6]
-assert gr.getAdjacentes(6) == [5, 7]
-assert gr.getAdjacentes(7) == [6]
-assert gr.getAdjacentes(8) == [2]
 
-# diametros das arvores minimas
-teste_random_tree()
-testeRandomTreeKruskal()
-testeRandomTreePrim()
+def auxiliarFunctionsPrimTest():
+    q = queue(5)
+    chaves = [2, 3, 6, 8, 0]
+    q.enfileira(0)
+    q.enfileira(1)
+    q.enfileira(2)
+    q.enfileira(3)
+    q.enfileira(4)
+    assert q.extractMin(chaves) == 4
+    assert q.extractMin(chaves) == 0
+    assert q.extractMin(chaves) == 1
+    assert q.extractMin(chaves) == 2
+    assert q.extractMin(chaves) == 3
+    assert q.isFilaVazia() == True
+
+
+def allTests():
+    DiameterTest()
+    IsTreeTest()
+    simpleTestRandomTreeTadomWalk()
+    auxiliarFuncionKruskalTest()
+    auxiliarFunctionsPrimTest()
+    simpleTestKruskalandPrim()
+
+
+def Diameters():
+    diameterrandomTree()
+    diameterRandomTreeKruskal()
+    diameterRandomTreePrim()
+
+
+def main():
+    allTests()
+    Diameters()
+
+
+if __name__ == "__main__":
+    main()
