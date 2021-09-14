@@ -183,8 +183,8 @@ após isso escre o tempo de execução em segundos
 
 
 def diameterrandomTree():
-    diameters = open("randomTree.txt", "w")
-    timearq = open("randomTreeTime.txt", "w")
+    diameters = open("results/randomTree.txt", "w")
+    timearq = open("results/randomTreeTime.txt", "w")
     total = 0
     parametroinit = 250
     arvore = False
@@ -218,8 +218,8 @@ def diameterrandomTree():
 
 
 def diameterRandomTreeKruskal():
-    diameters = open("randomTreeKruskal.txt", "w")
-    timearq = open("randomTreeKruskalTime.txt", "w")
+    diameters = open("results/randomTreeKruskal.txt", "w")
+    timearq = open("results/randomTreeKruskalTime.txt", "w")
     total = 0
     parametroinit = 250
     arvore = False
@@ -253,8 +253,8 @@ def diameterRandomTreeKruskal():
 
 
 def diameterRandomTreePrim():
-    diameters = open("randomTreePrim.txt", "w")
-    timearq = open("randomTreePrimTime.txt", "w")
+    diameters = open("results/randomTreePrim.txt", "w")
+    timearq = open("results/randomTreePrimTime.txt", "w")
     total = 0
     parametroinit = 250
     arvore = False
